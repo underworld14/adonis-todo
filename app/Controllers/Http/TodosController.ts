@@ -1,6 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import BadRequestException from 'App/Exceptions/BadRequestException'
-import Activity from 'App/Models/Activity'
 import Todo from 'App/Models/Todo'
 
 export default class TodosController {
