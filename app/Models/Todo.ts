@@ -1,15 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import Activity from './Activity'
-
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 export default class Todo extends BaseModel {
-  @column({ isPrimary: true })
-  public id: number
-
-  @belongsTo(() => Activity, {
-    foreignKey: 'activity_group_id',
-  })
-  public activity_group: BelongsTo<typeof Activity>
+  @column({ isPrimary: true, serializeAs: 'id' })
+  public todo_id: number
 
   @column()
   public activity_group_id: number
@@ -21,7 +14,7 @@ export default class Todo extends BaseModel {
   public is_active: boolean
 
   @column()
-  public priority: 'very-high' | 'high' | 'medium' | 'low' | 'very-low'
+  public priority: string
 
   @column.dateTime({ autoCreate: true, serializeAs: 'createdAt' })
   public createdAt: DateTime

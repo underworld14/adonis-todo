@@ -1,24 +1,24 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import BadRequestException from 'App/Exceptions/BadRequestException'
 import Activity from 'App/Models/Activity'
 
 export default class ActivitiesController {
-  private newAcitivityValidation = schema.create({
-    title: schema.string(),
-    email: schema.string({}, [rules.email()]),
-  })
+  private validate(body: Record<string, any>) {
+    const requiredSchema = ['title']
 
-  private updateActivityValidation = schema.create({
-    title: schema.string.optional(),
-    email: schema.string.optional({}, [rules.email()]),
-  })
+    requiredSchema.forEach((property) => {
+      if (!body[property]) {
+        throw new BadRequestException(`${property} cannot be null`)
+      }
+    })
+  }
 
   public async index({ response }: HttpContextContract) {
     const activities = await Activity.query()
 
     return response.json({
-      status: 'success',
-      message: 'success',
+      status: 'Success',
+      message: 'Success',
       data: activities,
     })
   }
@@ -35,26 +35,28 @@ export default class ActivitiesController {
     }
 
     return response.json({
-      status: 'success',
-      message: 'success',
+      status: 'Success',
+      message: 'Success',
       data: activity,
     })
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const payload = await request.validate({ schema: this.newAcitivityValidation })
+    const payload = request.only(['title', 'email'])
+    this.validate(payload)
     const activity = await Activity.create(payload)
 
     return response.status(201).json({
-      status: 'success',
-      message: 'success',
+      status: 'Success',
+      message: 'Success',
       data: activity,
     })
   }
 
   public async update({ request, response }: HttpContextContract) {
     const activityId = request.param('id')
-    const payload = await request.validate({ schema: this.updateActivityValidation })
+    const payload = request.only(['title', 'email'])
+    this.validate(payload)
     const activity = await Activity.find(activityId)
 
     if (!activity) {
@@ -67,8 +69,8 @@ export default class ActivitiesController {
     await activity.merge(payload).save()
 
     return response.json({
-      status: 'success',
-      message: 'success',
+      status: 'Success',
+      message: 'Success',
       data: activity,
     })
   }
@@ -87,8 +89,8 @@ export default class ActivitiesController {
     await activity.delete()
 
     return response.json({
-      status: 'success',
-      message: 'success',
+      status: 'Success',
+      message: 'Success',
       data: {},
     })
   }

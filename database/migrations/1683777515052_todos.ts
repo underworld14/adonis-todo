@@ -5,13 +5,13 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.increments('todo_id')
       table.integer('activity_group_id').unsigned()
       table.string('title').notNullable()
       table.boolean('is_active').notNullable().defaultTo(true)
-      table.enum('priority', ['very-high', 'high', 'medium', 'low', 'very-low'])
+      table.string('priority').notNullable()
 
-      table.foreign('activity_group_id').references('activities.id').onDelete('CASCADE')
+      table.foreign('activity_group_id').references('activities.activity_id').onDelete('CASCADE')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
