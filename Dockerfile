@@ -19,4 +19,4 @@ ENV DB_CONNECTION=mysql
 
 EXPOSE 3030
 
-CMD [ "dumb-init", "node", "build/server.js" ]
+CMD [ "dumb-init", "npm", "run", "prod" ]
