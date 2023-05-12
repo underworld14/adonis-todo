@@ -53,7 +53,7 @@ export default class TodosController {
     this.validate(payload)
 
     if (!payload.priority) {
-      payload.priority = 'low'
+      payload.priority = 'very-high'
     }
 
     const todo = await Todo.create(payload)
