@@ -2,6 +2,8 @@ FROM node:16-alpine
 
 WORKDIR /home/node/app
 
+RUN apk --no-cache add dumb-init
+
 COPY . .
 
 RUN npm ci
@@ -17,4 +19,4 @@ ENV DB_CONNECTION=mysql
 
 EXPOSE 3030
 
-CMD [ "node", "build/server.js" ]
+CMD [ "dumb-init", "node", "build/server.js" ]
