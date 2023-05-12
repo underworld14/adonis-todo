@@ -7,7 +7,7 @@ export default class TodosController {
     const requiredSchema = ['title', 'activity_group_id', 'is_active']
 
     requiredSchema.forEach((property) => {
-      if (!body[property]) {
+      if (!body.hasOwnProperty(property)) {
         throw new BadRequestException(`${property} cannot be null`)
       }
     })

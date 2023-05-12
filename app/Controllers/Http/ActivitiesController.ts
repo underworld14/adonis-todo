@@ -7,7 +7,7 @@ export default class ActivitiesController {
     const requiredSchema = ['title']
 
     requiredSchema.forEach((property) => {
-      if (!body[property]) {
+      if (!body.hasOwnProperty(property)) {
         throw new BadRequestException(`${property} cannot be null`)
       }
     })
