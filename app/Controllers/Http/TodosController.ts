@@ -52,7 +52,6 @@ export default class TodosController {
   public async store({ request, response }: HttpContextContract) {
     const payload = request.only(['title', 'activity_group_id', 'is_active', 'priority'])
     this.validate(payload)
-    await Activity.findOrFail(payload.activity_group_id)
 
     if (!payload.priority) {
       payload.priority = 'low'
@@ -70,10 +69,6 @@ export default class TodosController {
   public async update({ request, response }: HttpContextContract) {
     const todoId = request.param('id')
     const payload = request.only(['title', 'activity_group_id', 'is_active', 'priority'])
-
-    if (payload.activity_group_id) {
-      await Activity.findOrFail(payload.activity_group_id)
-    }
 
     const todo = await Todo.find(todoId)
 
