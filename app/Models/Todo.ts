@@ -10,7 +10,11 @@ export default class Todo extends BaseModel {
   @column()
   public title: string
 
-  @column()
+  @column({
+    serialize(value) {
+      return !!value
+    },
+  })
   public is_active: boolean
 
   @column()

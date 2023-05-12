@@ -1,11 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import BadRequestException from 'App/Exceptions/BadRequestException'
 import Todo from 'App/Models/Todo'
-import Logger from '@ioc:Adonis/Core/Logger'
 
 export default class TodosController {
   private validate(body: Record<string, any>) {
-    const requiredSchema = ['title', 'activity_group_id', 'is_active']
+    const requiredSchema = ['title', 'activity_group_id']
     requiredSchema.forEach((property) => {
       if (!body.hasOwnProperty(property)) {
         throw new BadRequestException(`${property} cannot be null`)
@@ -50,11 +49,14 @@ export default class TodosController {
 
   public async store({ request, response }: HttpContextContract) {
     const payload = request.only(['title', 'activity_group_id', 'is_active', 'priority'])
-    Logger.info(JSON.stringify(request.body(), null, 2))
     this.validate(payload)
 
     if (!payload.priority) {
       payload.priority = 'very-high'
+    }
+
+    if (payload.is_active === undefined) {
+      payload.is_active = true
     }
 
     const todo = await Todo.create(payload)
